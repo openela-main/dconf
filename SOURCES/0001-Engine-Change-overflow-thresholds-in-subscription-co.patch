@@ -1,0 +1,35 @@
+From 63c985f5afecc69eee3fe7a7e04cc8118097b3c3 Mon Sep 17 00:00:00 2001
+From: Daniel Playfair Cal <daniel.playfair.cal@gmail.com>
+Date: Wed, 15 Aug 2018 08:46:49 +1000
+Subject: [PATCH] Engine: Change overflow thresholds in subscription counts
+ from GMAXUINT32 to GMAXUINT
+
+---
+ engine/dconf-engine.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/engine/dconf-engine.c b/engine/dconf-engine.c
+index ad891e6..dde8c18 100644
+--- a/engine/dconf-engine.c
++++ b/engine/dconf-engine.c
+@@ -253,7 +253,7 @@ dconf_engine_move_subscriptions (GHashTable  *from_counts,
+   guint from_count = GPOINTER_TO_UINT (g_hash_table_lookup (from_counts, path));
+   guint old_to_count = GPOINTER_TO_UINT (g_hash_table_lookup (to_counts, path));
+   // Detect overflows
+-  g_assert (old_to_count <= G_MAXUINT32 - from_count);
++  g_assert (old_to_count <= G_MAXUINT - from_count);
+   guint new_to_count = old_to_count + from_count;
+   if (from_count != 0)
+     {
+@@ -275,7 +275,7 @@ dconf_engine_inc_subscriptions (GHashTable  *counts,
+ {
+   guint old_count = GPOINTER_TO_UINT (g_hash_table_lookup (counts, path));
+   // Detect overflows
+-  g_assert (old_count < G_MAXUINT32);
++  g_assert (old_count < G_MAXUINT);
+   guint new_count = old_count + 1;
+   g_hash_table_replace (counts, g_strdup (path), GUINT_TO_POINTER (new_count));
+   return new_count;
+-- 
+2.20.1
+

@@ -1,0 +1,37 @@
+From 6e6089791b38b4da84d5b49c0b24286be1526a2b Mon Sep 17 00:00:00 2001
+From: Daniel Playfair Cal <daniel.playfair.cal@gmail.com>
+Date: Wed, 25 Jul 2018 23:58:26 +1000
+Subject: [PATCH 1/5] Engine: add some missing objects to dconf_engine_unref
+
+---
+ engine/dconf-engine.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/engine/dconf-engine.c b/engine/dconf-engine.c
+index c0ff12d..2a99eab 100644
+--- a/engine/dconf-engine.c
++++ b/engine/dconf-engine.c
+@@ -289,11 +289,20 @@ dconf_engine_unref (DConfEngine *engine)
+ 
+       g_free (engine->last_handled);
+ 
++      while (!g_queue_is_empty (&engine->pending))
++        dconf_changeset_unref ((DConfChangeset *) g_queue_pop_head (&engine->pending));
++
++      while (!g_queue_is_empty (&engine->in_flight))
++        dconf_changeset_unref ((DConfChangeset *) g_queue_pop_head (&engine->in_flight));
++
+       for (i = 0; i < engine->n_sources; i++)
+         dconf_engine_source_free (engine->sources[i]);
+ 
+       g_free (engine->sources);
+ 
++      g_hash_table_unref(engine->pending_paths);
++      g_hash_table_unref(engine->watched_paths);
++
+       if (engine->free_func)
+         engine->free_func (engine->user_data);
+ 
+-- 
+2.20.1
+
