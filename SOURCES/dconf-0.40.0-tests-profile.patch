@@ -1,0 +1,38 @@
+From c755ccd699cc0b52f73cfdae30fb7e2c3a46c8c1 Mon Sep 17 00:00:00 2001
+From: Marek Kasik <mkasik@redhat.com>
+Date: Tue, 12 Nov 2024 15:23:37 +0100
+Subject: [PATCH] tests: Do not use system profile
+
+Set default profile containing "user-db:user"
+so that tests don't use system profile.
+
+Fixes: #58
+---
+ tests/test-dconf.py | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/tests/test-dconf.py b/tests/test-dconf.py
+index 1f50da8..3ac60d3 100755
+--- a/tests/test-dconf.py
++++ b/tests/test-dconf.py
+@@ -105,10 +105,17 @@ class DBusTest(unittest.TestCase):
+         os.mkdir(self.dbus_dir, mode=0o700)
+         os.mkdir(os.path.join(self.config_home, 'dconf'))
+ 
++        os.environ['DCONF_PROFILE'] = os.path.join(self.temporary_dir.name, 'profile')
+         os.environ['DCONF_BLAME'] = ''
+         os.environ['XDG_RUNTIME_DIR'] = self.runtime_dir
+         os.environ['XDG_CONFIG_HOME'] = self.config_home
+ 
++        # Configure default profile so that the system one
++        # does not affect the tests.
++        path = os.path.join(self.temporary_dir.name, 'profile')
++        with open(path, 'w') as file:
++            file.write('user-db:user')
++
+         # Prepare dbus-daemon config.
+         dbus_daemon_config = os.path.join(self.dbus_dir, 'session.conf')
+         with open(dbus_daemon_config, 'w') as file:
+-- 
+2.47.0
+
