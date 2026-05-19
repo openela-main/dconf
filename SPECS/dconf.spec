@@ -2,7 +2,7 @@
 
 Name:           dconf
 Version:        0.40.0
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        A configuration system
 
 License:        LGPL-2.0-or-later AND LGPL-2.1-or-later AND GPL-2.0-or-later AND GPL-3.0-or-later
@@ -12,6 +12,7 @@ Source0:        https://download.gnome.org/sources/dconf/0.40/dconf-%{version}.t
 Patch1:         dconf-override.patch
 Patch2:         dconf-0.40.0-tests-profile.patch
 Patch3:         dconf-0.40.0-permissions.patch
+Patch4:         dconf-0.40.0-DBDIR-doc.patch
 
 BuildRequires:  bash-completion
 BuildRequires:  dbus-devel
@@ -109,6 +110,10 @@ mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/dconf/db/distro.d/locks
 %{_datadir}/vala
 
 %changelog
+* Fri Jan 9 2026 Marek Kasik <mkasik@redhat.com> - 0.40.0-17
+- Describe DBDIR argument in man page
+- Resolves: RHEL-83392
+
 * Fri Jan 10 2025 Marek Kasik <mkasik@redhat.com> - 0.40.0-16
 - Backport patch for permissions restore
 - Indicate bundle of GVDB

@@ -1,0 +1,38 @@
+From 3a50fbc21b8b2e659205833027cbf842e0e7a2a9 Mon Sep 17 00:00:00 2001
+From: Marek Kasik <mkasik@redhat.com>
+Date: Wed, 7 Jan 2026 16:29:48 +0100
+Subject: docs: Describe DBDIR argument in man page
+
+This patch also fixes a typo.
+---
+ docs/dconf-tool.xml | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/docs/dconf-tool.xml b/docs/dconf-tool.xml
+index 0e2bba9..687d045 100644
+--- a/docs/dconf-tool.xml
++++ b/docs/dconf-tool.xml
+@@ -105,7 +105,7 @@
+     </para>
+ 
+     <para>
+-      The <replaceable>OUTPUT</replaceable> argument must the location to write a (binary) dconf database to and the
++      The <replaceable>OUTPUT</replaceable> argument must be the location to write a (binary) dconf database to and the
+       <replaceable>KEYFILEDIR</replaceable> argument must be a .d directory containing keyfiles.
+     </para>
+ 
+@@ -114,6 +114,11 @@
+       explicit quotes: "'foo'". This format is also used when printing out values.
+     </para>
+ 
++    <para>
++      The optional <replaceable>DBDIR</replaceable> argument is a directory containing the system dconf databases to be updated.
++      The default directory is typically <filename>/etc/dconf/db/</filename> and users need sufficient privileges to update it.
++    </para>
++
+     <para>
+       Note that dconf needs a D-Bus session bus connection to write changes to the dconf database.
+     </para>
+-- 
+2.52.0
+
